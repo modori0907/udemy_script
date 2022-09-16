@@ -47,19 +47,24 @@ while True:
                 cost = int(element_text.split("-")[1].strip().replace(",", ""))
                 item_prices.append(cost)
 
-        # Create dictionary of store items and prices
+        # keyを値段、valueをアイテムにする辞書を作成
         cookie_upgrades = {}
+
+        # ストアにある一覧の数を取り出す。range関数を利用して数分だけ繰り返し処理、nに引き渡すのは数字
+
         for n in range(len(item_prices)):
+            # 値段とアイテム名を追加する
             cookie_upgrades[item_prices[n]] = item_ids[n]
 
-        # Get current cookie count
+        # どれくらい稼いでいるチェックする処理
         money_element = driver.find_element(By.ID, "money").text
-        # print(f"replace前：{money_element}")  replace前：217
+        # 取得する値例は217
         if "," in money_element:
             money_element = money_element.replace(",", "")
+        # お金の処理
         cookie_count = int(money_element)
 
-        # Find upgrades that we can currently afford
+        # Find upgrades
         affortable_upgrades = {}
         for cost, id in cookie_upgrades.items():
             if cookie_count > cost:
