@@ -61,20 +61,18 @@ while True:
         # 取得する値例は217
         if "," in money_element:
             money_element = money_element.replace(",", "")
-        # お金の処理
         cookie_count = int(money_element)
 
-        # Find upgrades
+        # クッキーの値段で購入できる商品を辞書に入れる
         affortable_upgrades = {}
         for cost, id in cookie_upgrades.items():
             if cookie_count > cost:
                 affortable_upgrades[cost] = id  # もし、クッキーの値段が商品の値段より大きかったら、値段と商品名の辞書
 
-        # Purchase the most expensive affotable upgrade
-        highest_price_affortable_upgrade = max(affortable_upgrades) # keyで一番値が大きいものを取り出す処理。つまり値段
-        # print(highest_price_affortable_upgrade)
+        # 購入できる商品の中で一番高い物を抽出する処理。max関数でkeyで一番値が大きいものを取り出す処理。つまり値段
+        highest_price_affortable_upgrade = max(affortable_upgrades)
         to_purchase_id = affortable_upgrades[highest_price_affortable_upgrade]
-        print(to_purchase_id) # idの値はうまく取得できてる　Grandmaで止まる
+        print(to_purchase_id) # 購入する商品の名称を取り出す
 
         """
         <selenium.webdriver.remote.webelement.WebElement (session="fd32ca9c3399c5160526714c9a621a0b", element="4d7a904e-9ae8-47c7-ab5a-20da01db0c85")>
@@ -82,11 +80,12 @@ while True:
         <selenium.webdriver.remote.webelement.WebElement (session="fd32ca9c3399c5160526714c9a621a0b", element="9a8f2577-af4e-4b29-a199-015864d5a869")>
         buyGrandma
         """
-
+        # 購入できる製品名はIDタグに記載されているので、それを利用してクリック処理を行う
         driver.find_element(By.ID, to_purchase_id).click()
+        # 実行後。タイムアウトの時間を更新する処理。今の時間に5秒追加する。この後、またクリックする処理が走る
         timeout = time.time() + 5
 
-    # After 5 minutes stop the bot and check the cookies per second count
+    # 始まってからの時間が５分を警戒したかどうか確認する処理。breakでwhile関数を抜ける
     if time.time() > five_min:
         cookie_per_s = driver.find_element(By.ID, "cps").text
         print(cookie_per_s)
